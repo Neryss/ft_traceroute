@@ -1,0 +1,38 @@
+[
+  {
+    "file": "src/main.c",
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "-g3",
+      "-I./includes",
+      "-c",
+      "src/main.c",
+      "-o",
+      "src/main.o"
+    ],
+    "directory": "/home/neryss/Documents/42/ft_traceroute/app",
+    "output": "src/main.o"
+  },
+  {
+    "file": "src/flags.c",
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "-g3",
+      "-I./includes",
+      "-c",
+      "src/flags.c",
+      "-o",
+      "src/flags.o"
+    ],
+    "directory": "/home/neryss/Documents/42/ft_traceroute/app",
+    "output": "src/flags.o"
+  }
+]
