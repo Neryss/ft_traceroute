@@ -18,13 +18,14 @@
 
 static int	handle_solo_id(char *id, t_params *params)
 {
-	if (*id == '?')
+  (void)params;
+	if (strcmp(id, "--help"))
 	{
 		print_help_menu();
 		exit(0);
 	}
-	else if (*id == 'v')
-		return (flags->verbose = true);
+	// else if (*id == 'v')
+	// 	return (flags->verbose = true);
 	return (0);
 }
 
@@ -50,6 +51,22 @@ char	*get_identifier(char *arg)
 		}
 	}
 	return (NULL);
+}
+
+static void	store_flags(char *id, char *pass, t_params *params)
+{
+	if (*id == 'm')
+		store_int_flag(pass, params->ttl);
+	else if (*id == 'f')
+		store_int_flag(pass, params->hop_start);
+	else if (*id == 'q')
+		store_int_flag(pass, params->probes_per_hop);
+	else if (*id == 'z')
+		store_float_flag(pass, params->interval);
+	else if (!strcmp(id, "rdns"))
+    params->rdns = true;
+	else
+		error_exit(1, "invalid option %s", id);
 }
 
 int	check_identifier(int *i_argc, char *id, char *value, t_params *params)
