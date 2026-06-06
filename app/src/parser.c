@@ -12,9 +12,11 @@
 
 #include "parser.h"
 #include "params.h"
+#include "error_exit.h"
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <ctype.h>
 
 static int	handle_solo_id(char *id, t_params *params)
 {
@@ -53,16 +55,88 @@ char	*get_identifier(char *arg)
 	return (NULL);
 }
 
+bool	is_numeric(char *s)
+{
+	while (*s)
+	{
+		if (!isdigit(*s))
+			return (1);
+		s++;
+	}
+	return (0);
+}
+
+bool	is_float(char *s)
+{
+	int	dot_count;
+
+	dot_count = 0;
+	while (*s)
+	{
+		if (*s == '.')
+		{
+			if (dot_count < 1)
+				dot_count++;
+			else
+				return (1);
+		}
+		else if (!isdigit(*s))
+			return (1);
+		s++;
+	}
+	return (0);
+}
+
+int	store_int_flag(char *value, int *var)
+{
+	if (!is_numeric(value))
+	{
+		*var = atoi(value);
+		return (0);
+	}
+	// error_exit(1, "invalid value (\'%s\' near \'%s\')",
+	// 	value, near_error(value));
+  error_exit(1, "invalid value: %s\n", value);
+	return (1);
+}
+
+int	store_uint8_flag(char *value, uint8_t *var)
+{
+	int	tmp;
+
+	tmp = 0;
+	if (!is_numeric(value))
+	{
+		tmp = atoi(value);
+		if (tmp > 255 || tmp < 0)
+			error_exit(1, "option value too big: %d\n", tmp);
+		*var = tmp;
+		return (0);
+	}
+  error_exit(1, "invalid value: %s\n", value);
+	// error_exit(1, "invalid value (\'%s\' near \'%s\')",
+	// 	value, near_error(value));
+	return (1);
+}
+
+void	parse_i_float(char *pass, float *var)
+{
+	if (!is_float(pass))
+		*var = atof(pass);
+	else
+		error_exit(1, "invalid value %s", pass);
+}
+
 static void	store_flags(char *id, char *pass, t_params *params)
 {
 	if (*id == 'm')
-		store_int_flag(pass, params->ttl);
+		store_uint8_flag(pass, &params->ttl);
 	else if (*id == 'f')
-		store_int_flag(pass, params->hop_start);
+		store_int_flag(pass, &params->hop_start);
 	else if (*id == 'q')
-		store_int_flag(pass, params->probes_per_hop);
+		store_int_flag(pass, &params->probes_per_hop);
 	else if (*id == 'z')
-		store_float_flag(pass, params->interval);
+	  parse_i_float(pass, &params->interval);
 	else if (!strcmp(id, "rdns"))
     params->rdns = true;
 	else
@@ -107,7 +181,7 @@ int	handle_dashes(int argc, char **argv, int i, t_params *params)
 	}
 	i_argc[0] = i;
 	i_argc[1] = argc;
-	return (check_identifier(i_argc, identifier, argv[i + 1], flags));
+	return (check_identifier(i_argc, identifier, argv[i + 1], params));
 }
 
 void	parse_args(int argc, char **argv, t_params *params)

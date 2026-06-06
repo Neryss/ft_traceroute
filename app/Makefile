@@ -6,10 +6,15 @@ NAME=ft_traceroute
 
 INCLUDES= \
 		  ./includes/params.h \
+			./includes/error_exit.h \
+			./includes/parser.h \
+			./includes/error_exit.h \
 
 SRCS= \
 	  ./src/main.c \
 	  ./src/params.c \
+		./src/parser.c \
+		./src/error_exit.c
 
 OBJS= $(SRCS:%.c=%.o)
 
