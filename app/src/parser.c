@@ -21,7 +21,7 @@
 static int	handle_solo_id(char *id, t_params *params)
 {
   (void)params;
-	if (strcmp(id, "--help"))
+	if (!strcmp(id, "--help"))
 	{
 		print_help_menu();
 		exit(0);
@@ -148,7 +148,7 @@ int	check_identifier(int *i_argc, char *id, char *value, t_params *params)
 	char	*pass;
 	int		ret;
 
-	if (strlen(id) > 1 && (strcmp(id, "ttl") | strcmp(id, "help")))
+	if (strlen(id) > 1 && strcmp(id, "help"))
 	{
 		pass = &id[1];
 		ret = 0;

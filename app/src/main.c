@@ -7,5 +7,6 @@ int main(int argc, char **argv) {
   t_params params;
 
   parse_args(argc, argv, &params);
+	print_flags(&params);
   return (0);
 }

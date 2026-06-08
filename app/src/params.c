@@ -13,9 +13,11 @@
 #include "params.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <strings.h>
 
 void	init_flags(t_params *params)
 {
+	bzero(params, sizeof(t_params));
 	params->hop_start = 1;
 	params->interval = 0.0f;
 	params->packet_size = 32;
@@ -25,8 +27,8 @@ void	init_flags(t_params *params)
 
 void	print_flags(t_params *params)
 {
-	printf("Hop start = %d\ninterval = %f\npacket size = %d\nprobes/hop = %d\nttl = %d\n",
-		params->hop_start, params->interval, params->packet_size, params->probes_per_hop, params->ttl);
+	printf("Host: %s\nHop start = %d\ninterval = %f\npacket size = %d\nprobes/hop = %d\nttl = %d\n",
+		params->host, params->hop_start, params->interval, params->packet_size, params->probes_per_hop, params->ttl);
 }
 
 void    print_help_menu(void)

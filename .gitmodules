@@ -1,0 +1,3 @@
+[submodule "app/libft"]
+	path = app/libft
+	url = git@github.com:Neryss/libft.git

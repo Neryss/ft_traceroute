@@ -18,20 +18,27 @@ SRCS= \
 
 OBJS= $(SRCS:%.c=%.o)
 
+all: $(NAME)
+
 %.o: %.c Makefile $(INCLUDES)
 	$(CC) $(CFLAGS) $(INCLUDE_PATH) -c $< -o $@
 
-$(NAME): $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) -lm $(INCLUDE_PATH) -o $(NAME)
+./libft/libft.a:
+	$(MAKE) -C ./libft/
 
-all: $(NAME)
+$(NAME): $(OBJS) ./libft/libft.a
+	cp ./libft/libft.a ./
+	$(CC) $(CFLAGS) $(OBJS) -lm $(INCLUDE_PATH) -o $(NAME) -L./ -lft
+
 
 fclean:
 	rm -rf $(OBJS)
 	rm -rf $(NAME)
+	$(MAKE) -C ./libft/ fclean
 
 re: fclean
 	$(MAKE)
+	$(MAKE) -C ./libft/ re
 
 run: all
 	./$(NAME)
