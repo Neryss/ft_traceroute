@@ -1,29 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   socket.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: neryss <ckurt@student.42lyon.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/06/12 13:55:42 by neryss            #+#    #+#             */
-/*   Updated: 2026/06/12 14:32:04 by neryss           ###   ########.fr       */
+/*   Created: 2026/06/12 13:59:23 by neryss            #+#    #+#             */
+/*   Updated: 2026/06/12 14:31:12 by neryss           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "params.h"
-#include "parser.h"
+#ifndef SOCKET_H
+#define SOCKET_H
+
 #include "traceroute.h"
-#include "socket.h"
 
-int main(int argc, char **argv)
-{
-	(void)argc;
-	(void)argv;
-	t_params		params;
-	t_traceroute	traceroute;
+void	set_icmp_sockopt(int socket);
+int		create_udp_socket(void);
+int		create_icmp_socket(void);
+void	set_udp_sockopt(int socket);
+void	init_sockets(t_traceroute *traceroute);
 
-	parse_args(argc, argv, &params);
-	print_flags(&params);
-	init_sockets(&traceroute);
-	return (0);
-}
+#endif

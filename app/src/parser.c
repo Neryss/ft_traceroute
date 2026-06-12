@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: neryss </var/spool/mail/neryss>            +#+  +:+       +#+        */
+/*   By: neryss <ckurt@student.42lyon.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/06/05 18:44:56 by neryss            #+#    #+#             */
-/*   Updated: 2026/06/05 18:57:55 by neryss           ###   ########.fr       */
+/*   Created: 2026/06/12 13:56:01 by neryss            #+#    #+#             */
+/*   Updated: 2026/06/12 13:56:02 by neryss           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,12 @@
 
 static int	handle_solo_id(char *id, t_params *params)
 {
-  (void)params;
+	(void)params;
 	if (!strcmp(id, "--help"))
 	{
 		print_help_menu();
 		exit(0);
 	}
-	// else if (*id == 'v')
-	// 	return (flags->verbose = true);
 	return (0);
 }
 
@@ -94,9 +92,7 @@ int	store_int_flag(char *value, int *var)
 		*var = atoi(value);
 		return (0);
 	}
-	// error_exit(1, "invalid value (\'%s\' near \'%s\')",
-	// 	value, near_error(value));
-  error_exit(1, "invalid value: %s\n", value);
+	error_exit(1, "invalid value: %s\n", value);
 	return (1);
 }
 
@@ -113,9 +109,7 @@ int	store_uint8_flag(char *value, uint8_t *var)
 		*var = tmp;
 		return (0);
 	}
-  error_exit(1, "invalid value: %s\n", value);
-	// error_exit(1, "invalid value (\'%s\' near \'%s\')",
-	// 	value, near_error(value));
+	error_exit(1, "invalid value: %s\n", value);
 	return (1);
 }
 
@@ -189,9 +183,12 @@ void	parse_args(int argc, char **argv, t_params *params)
 	int		i;
 
 	i = 0;
-	// if (argc < 2)
-	// 	error_exit(1, "missing host operand");
-	// else
+	if (argc < 2)
+	{
+		print_help_menu();
+		return ;
+	}
+	else
 	{
 		while (i++ < argc - 1)
 		{
@@ -205,10 +202,14 @@ void	parse_args(int argc, char **argv, t_params *params)
 				if (!params->host[0])
 					memcpy(params->host, argv[i], sizeof(params->host));
 				else
+				{
+					if (is_numeric(argv[i]))
+						error_exit(1, "Cannot handle \"packetlen\" cmdline arg `%s` on position %d\n", argv[i], i);
 					params->packet_size = atoi(argv[i]);
+				}
 			}
 		}
 	}
-	// if (!params->host[0])
-	// 	error_exit(1, "missing host operand");
+	if (!params->host[0])
+		error_exit(1, "missing host operand");
 }

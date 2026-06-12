@@ -1,18 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error_exit.h                                       :+:      :+:    :+:   */
+/*   traceroute.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: neryss <ckurt@student.42lyon.fr>           +#+  +:+       +#+        */
+/*   By: neryss </var/spool/mail/neryss>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/06/12 13:56:10 by neryss            #+#    #+#             */
-/*   Updated: 2026/06/12 13:56:31 by neryss           ###   ########.fr       */
+/*   Created: 2026/06/12 13:45:41 by neryss            #+#    #+#             */
+/*   Updated: 2026/06/12 14:19:57 by neryss           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ERROR_EXIT_H
-# define ERROR_EXIT_H
+#ifndef TRACEROUTE_H
+#define TRACEROUTE_H
 
-void	error_exit(int code, const char *msg, ...);
+typedef struct	s_traceroute
+{
+	int	udp_socket;
+	int	icmp_socket;
+}				t_traceroute;
 
 #endif

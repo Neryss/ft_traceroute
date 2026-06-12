@@ -9,12 +9,15 @@ INCLUDES= \
 			./includes/error_exit.h \
 			./includes/parser.h \
 			./includes/error_exit.h \
+			./includes/socket.h \
+			./includes/traceroute.h \
 
 SRCS= \
-	  ./src/main.c \
-	  ./src/params.c \
-		./src/parser.c \
-		./src/error_exit.c
+	./src/main.c \
+	./src/params.c \
+	./src/parser.c \
+	./src/error_exit.c \
+	./src/socket.c \
 
 OBJS= $(SRCS:%.c=%.o)
 
