@@ -6,11 +6,12 @@
 /*   By: neryss <ckurt@student.42lyon.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/12 14:02:00 by neryss            #+#    #+#             */
-/*   Updated: 2026/06/12 14:30:29 by neryss           ###   ########.fr       */
+/*   Updated: 2026/06/12 16:20:55 by neryss           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "socket.h"
+#include "error_exit.h"
 #include <asm-generic/socket.h>
 #include <bits/types/struct_timeval.h>
 #include <netinet/in.h>
@@ -31,14 +32,20 @@ void	set_udp_sockopt(int socket)
 {
 	struct timeval	timeout = {5, 0};
 	if (setsockopt(socket, SOL_SOCKET, SO_RCVTIMEO, &timeout, sizeof(timeout)) < 0)
+	{
+		error_exit(1, "Could not set sock opt on UDP socket\n");
 		exit(1);
+	}
 }
 
 void	set_icmp_sockopt(int socket)
 {
 	struct timeval	timeout = {5, 0};
 	if (setsockopt(socket, SOL_SOCKET, SO_RCVTIMEO, &timeout, sizeof(timeout)) < 0)
+	{
+		error_exit(1, "Could not set sock opt on ICMP socket\n");
 		exit(1);
+	}
 }
 
 void	init_sockets(t_traceroute *traceroute)

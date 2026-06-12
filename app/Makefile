@@ -11,6 +11,8 @@ INCLUDES= \
 			./includes/error_exit.h \
 			./includes/socket.h \
 			./includes/traceroute.h \
+			./includes/root.h \
+			./includes/dns.h \
 
 SRCS= \
 	./src/main.c \
@@ -18,6 +20,8 @@ SRCS= \
 	./src/parser.c \
 	./src/error_exit.c \
 	./src/socket.c \
+	./src/root.c \
+	./src/dns.c \
 
 OBJS= $(SRCS:%.c=%.o)
 

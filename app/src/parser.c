@@ -6,7 +6,7 @@
 /*   By: neryss <ckurt@student.42lyon.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/12 13:56:01 by neryss            #+#    #+#             */
-/*   Updated: 2026/06/12 13:56:02 by neryss           ###   ########.fr       */
+/*   Updated: 2026/06/12 16:37:13 by neryss           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,6 +192,7 @@ void	parse_args(int argc, char **argv, t_params *params)
 	{
 		while (i++ < argc - 1)
 		{
+			printf("arg: %s\n", argv[i]);
 			if (argv[i][0] == '-')
 			{
 				if (handle_dashes(argc, argv, i, params))
@@ -200,7 +201,10 @@ void	parse_args(int argc, char **argv, t_params *params)
 			else
 			{
 				if (!params->host[0])
+				{
+					printf("setting host");
 					memcpy(params->host, argv[i], sizeof(params->host));
+				}
 				else
 				{
 					if (is_numeric(argv[i]))
