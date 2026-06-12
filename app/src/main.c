@@ -6,16 +6,16 @@
 /*   By: neryss <ckurt@student.42lyon.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/12 13:55:42 by neryss            #+#    #+#             */
-/*   Updated: 2026/06/12 16:51:47 by neryss           ###   ########.fr       */
+/*   Updated: 2026/06/12 20:21:59 by neryss           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "params.h"
 #include "parser.h"
 #include "traceroute.h"
-#include "socket.h"
 #include "root.h"
 #include "dns.h"
+#include <stdint.h>
 #include <unistd.h>
 #include "../libft/libft.h"
 
@@ -26,12 +26,21 @@ int main(int argc, char **argv)
 
 	ft_bzero(&params, sizeof(t_params));
 	ft_bzero(&traceroute, sizeof(t_traceroute));
+	traceroute.port = 33434;
 	check_root();
 	parse_args(argc, argv, &params);
 	print_flags(&params);
 	dns_lookup(&params);
 	if (params.rdns)
 		reverse_dns_lookup(&params);
-	init_sockets(&traceroute);
+	init_traceroute(&traceroute, &params);
+	for (uint8_t i = 0; i < 8; i++)
+	{
+		send_probe(&traceroute);
+		traceroute.ttl++;
+		increment_port(&traceroute);
+		recv_icmp(&traceroute);
+		sleep(1);
+	}
 	return (0);
 }

@@ -22,6 +22,7 @@ SRCS= \
 	./src/socket.c \
 	./src/root.c \
 	./src/dns.c \
+	./src/traceroute.c \
 
 OBJS= $(SRCS:%.c=%.o)
 
