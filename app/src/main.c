@@ -34,12 +34,13 @@ int main(int argc, char **argv)
 	if (params.rdns)
 		reverse_dns_lookup(&params);
 	init_traceroute(&traceroute, &params);
-	for (uint8_t i = 0; i < 8; i++)
+	traceroute.dest_str = params.host;
+	while (!traceroute.dest_reached)
 	{
 		send_probe(&traceroute);
-		traceroute.ttl++;
-		increment_port(&traceroute);
 		recv_icmp(&traceroute);
+		increment_port(&traceroute);
+		traceroute.ttl++;
 		sleep(1);
 	}
 	return (0);

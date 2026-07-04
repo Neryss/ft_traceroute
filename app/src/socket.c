@@ -36,6 +36,11 @@ void	set_udp_sockopt(int socket)
 		error_exit(1, "Could not set sock opt on UDP socket\n");
 		exit(1);
 	}
+	if (setsockopt(socket, SOL_SOCKET, SO_SNDTIMEO, &timeout, sizeof(timeout)) < 0)
+	{
+		error_exit(1, "Could not set UDP send timeout\n");
+		exit(1);
+	}
 }
 
 void	set_icmp_sockopt(int socket)

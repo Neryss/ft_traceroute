@@ -23,11 +23,14 @@
 typedef struct	s_traceroute
 {
 	struct sockaddr_in	dest;
+	char		*dest_str;
 	int			udp_socket;
 	int			icmp_socket;
 	uint16_t	port;
 	uint8_t		ttl;
-	char		packet[MAX_PACKET_SIZE];
+	char		snd_packet[MAX_PACKET_SIZE];
+	char		rcv_packet[MAX_PACKET_SIZE];
+	bool		dest_reached;
 }				t_traceroute;
 
 void	increment_port(t_traceroute *traceroute);

@@ -51,4 +51,4 @@ re: fclean
 run: all
 	./$(NAME)
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re ./libft/libft.a

@@ -108,6 +108,42 @@
     "output": "src/root.o"
   },
   {
+    "file": "src/dns.c",
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "-g3",
+      "-I./includes",
+      "-c",
+      "src/dns.c",
+      "-o",
+      "src/dns.o"
+    ],
+    "directory": "/home/neryss/Documents/42/ft_traceroute/app",
+    "output": "src/dns.o"
+  },
+  {
+    "file": "src/traceroute.c",
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "-g3",
+      "-I./includes",
+      "-c",
+      "src/traceroute.c",
+      "-o",
+      "src/traceroute.o"
+    ],
+    "directory": "/home/neryss/Documents/42/ft_traceroute/app",
+    "output": "src/traceroute.o"
+  },
+  {
     "file": "ft_memset.c",
     "arguments": [
       "/usr/bin/gcc",
