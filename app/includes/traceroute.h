@@ -33,6 +33,7 @@ typedef struct	s_traceroute
 	bool		dest_reached;
 	struct timeval	start;
 	struct timeval	end;
+	char		old_ip[255];
 }				t_traceroute;
 
 void	increment_port(t_traceroute *traceroute);

@@ -55,8 +55,13 @@ int main(int argc, char **argv)
 		if (current_time - last_time >= params.interval || last_time == 0)
 		{
 			last_time = current_time;
-			send_probe(&traceroute);
-			recv_icmp(&traceroute);
+			printf("%*d ", 2, traceroute.ttl);
+			for (int i = 0; i < params.probes_per_hop; i++)
+			{
+				send_probe(&traceroute);
+				recv_icmp(&traceroute);
+			}
+			printf("\n");
 			increment_port(&traceroute);
 			traceroute.ttl++;
 		}

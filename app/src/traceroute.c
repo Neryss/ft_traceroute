@@ -91,19 +91,14 @@ void	recv_icmp(t_traceroute *traceroute)
 {
 	struct sockaddr_in	rep_addr;
 	socklen_t			rep_len = sizeof(rep_addr);
-	int			bytes = 0;
+	int					bytes = 0;
 
 	bytes = recvfrom(traceroute->icmp_socket, traceroute->rcv_packet, MAX_PACKET_SIZE, 0, (struct sockaddr *)&rep_addr, &rep_len);
 	if (bytes <= 0)
-	{
-		// printf("recvfrom: %s\n", strerror(errno));
-		printf("%*i  *\n", 2, traceroute->ttl);
-	}
+		printf(" * ");
 	else
 	{
 		gettimeofday(&traceroute->end, 0);
-		// double	elapsed = ((double)(traceroute->end.tv_usec - traceroute->start.tv_usec)) / 1000000.0;
-		// long double	rtt = (traceroute->end.tv_sec - traceroute->start.tv_sec) * 1000.0 + elapsed;
 		long double	rtt = (traceroute->end.tv_sec - traceroute->start.tv_sec) * 1000000.0 + traceroute->end.tv_usec - traceroute->start.tv_usec;
 		rtt /= 1000;
 		char	rdns[255];
@@ -114,6 +109,6 @@ void	recv_icmp(t_traceroute *traceroute)
 			traceroute->dest_reached = true;
 		if (!rdns[0])
 			ft_strncpy(rdns, ip, ft_strlen(ip));
-		printf("%*i  %s (%s) %.3Lf ms\n", 2, traceroute->ttl, rdns, ip, rtt);
+		printf("%s (%s) %.3Lf ms ",rdns, ip, rtt);
 	}
 }
