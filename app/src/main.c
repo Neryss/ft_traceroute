@@ -17,17 +17,31 @@
 #include "dns.h"
 #include <stdint.h>
 #include <unistd.h>
+#include <sys/time.h>
 #include "../libft/libft.h"
+
+static double	get_time_seconds(void)
+{
+	struct	timeval	t;
+
+	gettimeofday(&t, 0);
+	return (t.tv_sec + t.tv_usec / 1e9);
+}
 
 int main(int argc, char **argv)
 {
 	t_params		params;
 	t_traceroute	traceroute;
+	double			current_time;
+	double			last_time;
 
+	current_time = 0.0;
+	last_time = 0.0;
 	ft_bzero(&params, sizeof(t_params));
 	ft_bzero(&traceroute, sizeof(t_traceroute));
 	traceroute.port = 33434;
 	check_root();
+	init_flags(&params);
 	parse_args(argc, argv, &params);
 	print_flags(&params);
 	dns_lookup(&params);
@@ -35,13 +49,17 @@ int main(int argc, char **argv)
 		reverse_dns_lookup(&params);
 	init_traceroute(&traceroute, &params);
 	traceroute.dest_str = params.host;
-	while (!traceroute.dest_reached)
+	while (!traceroute.dest_reached && traceroute.ttl < params.ttl)
 	{
-		send_probe(&traceroute);
-		recv_icmp(&traceroute);
-		increment_port(&traceroute);
-		traceroute.ttl++;
-		sleep(1);
+		current_time = get_time_seconds();
+		if (current_time - last_time >= params.interval || last_time == 0)
+		{
+			last_time = current_time;
+			send_probe(&traceroute);
+			recv_icmp(&traceroute);
+			increment_port(&traceroute);
+			traceroute.ttl++;
+		}
 	}
 	return (0);
 }

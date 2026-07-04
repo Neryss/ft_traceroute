@@ -17,7 +17,7 @@
 #include <netinet/in.h>
 #include <stdint.h>
 
-#define MAX_PACKET_SIZE 1024
+#define MAX_PACKET_SIZE 65535
 #define DEFAULT_PACKET_SIZE 32
 
 typedef struct	s_traceroute
@@ -31,6 +31,8 @@ typedef struct	s_traceroute
 	char		snd_packet[MAX_PACKET_SIZE];
 	char		rcv_packet[MAX_PACKET_SIZE];
 	bool		dest_reached;
+	struct timeval	start;
+	struct timeval	end;
 }				t_traceroute;
 
 void	increment_port(t_traceroute *traceroute);

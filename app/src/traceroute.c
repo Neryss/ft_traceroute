@@ -14,6 +14,7 @@
 #include "error_exit.h"
 #include "params.h"
 #include <errno.h>
+#include <netdb.h>
 #include <netinet/in.h>
 #include <stdint.h>
 #include <string.h>
@@ -23,6 +24,8 @@
 #include <netinet/ip.h>
 #include <netinet/ip_icmp.h>
 #include "socket.h"
+#include "../libft/libft.h"
+#include <sys/time.h>
 
 void	increment_port(t_traceroute *traceroute)
 {
@@ -47,9 +50,9 @@ void	send_probe(t_traceroute *traceroute)
 	if (setsockopt(traceroute->udp_socket, IPPROTO_IP, IP_TTL, &ttl, sizeof(ttl)))
 		error_exit(1, "ttl sockopt failed\n");
 	if (sendto(traceroute->udp_socket, traceroute->snd_packet, 32, 0,
-	(struct sockaddr *)&traceroute->dest, sizeof(traceroute->dest)))
-		return;
-		// printf("traceroute sendto: %s\n", strerror(errno));
+	(struct sockaddr *)&traceroute->dest, sizeof(traceroute->dest)) == -1)
+		printf("Could not send packet");
+	gettimeofday(&traceroute->start, 0);
 }
 
 void	parse_icmp(t_traceroute *traceroute)
@@ -68,6 +71,22 @@ void	parse_icmp(t_traceroute *traceroute)
 	(void)icmp_hdr;
 }
 
+void	packet_rdns_lookup(struct sockaddr_in *addr_in, char *dest)
+{
+	struct sockaddr_in	tmp_addr;
+	socklen_t			len;
+	int					ret = 0;
+
+	bzero(dest, 255);
+	tmp_addr.sin_family = AF_INET;
+	tmp_addr.sin_addr.s_addr = addr_in->sin_addr.s_addr;
+	len = sizeof(struct sockaddr_in);
+	if ((ret = getnameinfo((struct sockaddr *)&tmp_addr, len,
+			dest, MAX_PACKET_SIZE, NULL, 0,
+			NI_NAMEREQD)))
+		dest = NULL;
+}
+
 void	recv_icmp(t_traceroute *traceroute)
 {
 	struct sockaddr_in	rep_addr;
@@ -75,7 +94,6 @@ void	recv_icmp(t_traceroute *traceroute)
 	int			bytes = 0;
 
 	bytes = recvfrom(traceroute->icmp_socket, traceroute->rcv_packet, MAX_PACKET_SIZE, 0, (struct sockaddr *)&rep_addr, &rep_len);
-	// printf("bytes: %u\n", bytes);
 	if (bytes <= 0)
 	{
 		// printf("recvfrom: %s\n", strerror(errno));
@@ -83,10 +101,19 @@ void	recv_icmp(t_traceroute *traceroute)
 	}
 	else
 	{
+		gettimeofday(&traceroute->end, 0);
+		// double	elapsed = ((double)(traceroute->end.tv_usec - traceroute->start.tv_usec)) / 1000000.0;
+		// long double	rtt = (traceroute->end.tv_sec - traceroute->start.tv_sec) * 1000.0 + elapsed;
+		long double	rtt = (traceroute->end.tv_sec - traceroute->start.tv_sec) * 1000000.0 + traceroute->end.tv_usec - traceroute->start.tv_usec;
+		rtt /= 1000;
+		char	rdns[255];
 		parse_icmp(traceroute);
 		char	*ip = inet_ntoa(rep_addr.sin_addr);
+		packet_rdns_lookup(&rep_addr, rdns);
 		if (!strcmp(ip, traceroute->dest_str))
 			traceroute->dest_reached = true;
-		printf("%*i  %s\n", 2, traceroute->ttl, ip);
+		if (!rdns[0])
+			ft_strncpy(rdns, ip, ft_strlen(ip));
+		printf("%*i  %s (%s) %.3Lf ms\n", 2, traceroute->ttl, rdns, ip, rtt);
 	}
 }
