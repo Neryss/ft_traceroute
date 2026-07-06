@@ -109,6 +109,12 @@ void	recv_icmp(t_traceroute *traceroute)
 			traceroute->dest_reached = true;
 		if (!rdns[0])
 			ft_strncpy(rdns, ip, ft_strlen(ip));
-		printf("%s (%s) %.3Lf ms ",rdns, ip, rtt);
+		if (strcmp(traceroute->old_ip, ip))
+		{
+			strcpy(traceroute->old_ip, ip);
+			printf("%s (%s) %.3Lf ms ",rdns, ip, rtt);
+		}
+		else
+			printf("%.3Lf ms ", rtt);
 	}
 }

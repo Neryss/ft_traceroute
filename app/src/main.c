@@ -60,9 +60,9 @@ int main(int argc, char **argv)
 			{
 				send_probe(&traceroute);
 				recv_icmp(&traceroute);
+				increment_port(&traceroute);
 			}
 			printf("\n");
-			increment_port(&traceroute);
 			traceroute.ttl++;
 		}
 	}
