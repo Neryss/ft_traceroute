@@ -35,7 +35,6 @@ void    dns_lookup(t_params *params)
     INET_ADDRSTRLEN,
     "%s",
     inet_ntoa(((struct sockaddr_in *)params->ip->ai_addr)->sin_addr));
-	printf("Host: %s\n", params->host);
 }
 
 void	reverse_dns_lookup(t_params *params)
@@ -52,5 +51,4 @@ void	reverse_dns_lookup(t_params *params)
 			error_exit(1, "could not getnameinfo");
 	if (!ft_strlen(params->rdns_str))
 		ft_strncpy(params->rdns_str, params->host, ft_strlen(params->host));
-	printf("RDNS: %s\n", params->rdns_str);
 }

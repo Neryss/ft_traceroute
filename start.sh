@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-docker-compose run --rm --build traceroute
+docker compose run --rm --build traceroute

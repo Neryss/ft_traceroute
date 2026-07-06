@@ -43,7 +43,7 @@ int main(int argc, char **argv)
 	check_root();
 	init_flags(&params);
 	parse_args(argc, argv, &params);
-	print_flags(&params);
+	// print_flags(&params);
 	dns_lookup(&params);
 	if (params.rdns)
 		reverse_dns_lookup(&params);
