@@ -31,11 +31,7 @@ When sending for exemple 3 probes per hop, you need to increment the dest port e
 
 We face an issue where the second hop fails each time when routing to google.com for exemple, if we send 3 probes, each will fail after a set timeout, which corresponds to the current lib implementation as shown here:
 
-"""
- * If there is no response within a 5 sec. timeout
- * interval (changed with the -w flag), a "*" is printed for that
- * probe.
-"""
+'If there is no response within a 5 sec. timeout interval (changed with the -w flag), a "*" is printed for that probe.'
 
 (source: https://github.com/openbsd/src/blob/master/usr.sbin/traceroute/traceroute.c#L79)
 
